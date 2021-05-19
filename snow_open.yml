@@ -1,6 +1,6 @@
 ---
 - name: Create ticket with notes
-  hosts: localhost
+  hosts: hanas
   gather_facts: no
   connection: local
 
