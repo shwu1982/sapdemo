@@ -15,12 +15,12 @@
       username: "{{ sn_username }}"
       password: "{{ sn_password }}"
       instance: "{{ sn_instance }}"
+      attachment: /tmp/status.txt
       data:
         severity: "{{ sn_severity }}"
         priority: "{{ sn_priority }}"
         short_description: "This is a test opened by Ansible"
         caller_id: "System Administrator"
-        attachment: /tmp/status.txt
     register: new_incident
 
   - debug:
