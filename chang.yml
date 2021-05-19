@@ -20,6 +20,7 @@
         priority: "{{ sn_priority }}"
         short_description: "This is a test opened by Ansible"
         caller_id: "System Administrator"
+        attachment: /tmp/status.txt
     register: new_incident
 
   - debug:
