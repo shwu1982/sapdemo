@@ -8,8 +8,12 @@
   #become_flags: '-s /bin/sh'
 
   tasks:
-   - name: Start HANA
+   - name: HANA Status
      action: command /hana/shared/RHE/HDB00/HDB info
      register: result
 
+   - name: Create Status File
+     shell: "/hana/shared/RHE/HDB00/HDB info > /tmp/status.txt"
+
    - debug: msg="{{result.stdout}}"
+
