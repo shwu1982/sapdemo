@@ -8,16 +8,16 @@
   #become_flags: '-s /bin/sh'
 
   tasks:
-   - name: HANA Status
-     action: command /hana/shared/RHE/HDB00/HDB info
-     register: result
+    - name: HANA Status
+      action: command /hana/shared/RHE/HDB00/HDB info
+      register: result
 
-   - name: Create Status File
-     shell: "/hana/shared/RHE/HDB00/HDB info > /tmp/status.txt"
+    - name: Create Status File
+      shell: "/hana/shared/RHE/HDB00/HDB info > /tmp/status.txt"
 
-   - name: Make vars persistant
-     set_fact:
-       sys_status: "{{ result.stdout }}"
+    - name: Make vars persistant
+      set_fact:
+        sys_status: "{{ result.stdout }}"
 
 
 - name: Set Vars
