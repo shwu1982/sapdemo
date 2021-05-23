@@ -1,7 +1,7 @@
 ---
 - name: Start HANA DBs
   #command: /usr/sap/RHE/HDB00/exe/Python/bin/python /usr/sap/RHE/SYS/exe/hdb/python_support/fullSystemInfoDump.py -t RHE
-  hosts: hana-pb8jt
+  hosts: hana-pb8jt1
   become: true
   #become_method: su
   become_user: rheadm
