@@ -1,0 +1,55 @@
+---
+- name: Start HANA DBs
+  #command: /usr/sap/RHE/HDB00/exe/Python/bin/python /usr/sap/RHE/SYS/exe/hdb/python_support/fullSystemInfoDump.py -t RHE
+  hosts: hana-pb8jt1
+  become: true
+  #become_method: su
+  become_user: rheadm
+  #become_flags: '-s /bin/sh'
+
+  tasks:
+   - name: HANA Status
+     action: command /hana/shared/RHE/HDB00/HDB info
+     register: result
+
+   - name: Create Status File
+     shell: "/hana/shared/RHE/HDB00/HDB info > /tmp/status.txt"
+
+   - name: Make vars persistant
+     set_fact:
+       sys_status: "{{ result.stdout }}"
+
+
+- name: Set Vars
+  hosts: localhost
+  tasks:
+    - name: Set result
+      set_fact:
+        sys_status: "{{ hostvars['hana-pb8jt1']['sys_status']}}"
+
+- name: Create ticket with notes
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: include vars
+      include_vars: change_request_vars.yml
+
+    - name: Create a change request
+      snow_record:
+        state: present
+        table: incident
+        username: "{{ sn_username }}"
+        password: "{{ sn_password }}"
+        instance: "{{ sn_instance }}"
+        data:
+          severity: "{{ sn_severity }}"
+          priority: "{{ sn_priority }}"
+          short_description: "Created by Ansible"
+          caller_id: "System Administrator"
+          work_notes: "{{ sys_status }}"
+        #attachment: README.md
+      register: new_incident
+      tags: files
+    - debug:
+        var: new_incident.record
